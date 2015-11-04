@@ -6,6 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.linhnguyen.myapplication.R;
+import com.example.linhnguyen.myapplication.eventbus.MainScreenSettingEvent;
+import com.example.linhnguyen.myapplication.fragment.FragmentListEvent;
+import com.example.linhnguyen.myapplication.util.FragmentUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -22,7 +25,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        FragmentUtil.showFragment(MainActivity.this, FragmentListEvent.intantce(),false,null,"",false);
     }
 
+    @SuppressWarnings("unused")
+    public void onEventMainThread(MainScreenSettingEvent event) {
+
+    }
 }

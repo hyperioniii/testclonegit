@@ -18,14 +18,8 @@ import com.example.linhnguyen.myapplication.util.KeyboardUtil;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by Envy 15T on 6/4/2015.
- */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    AlertDialog dialogErrorAPI;
-    AlertDialog dialogTimeOutAPI;
-    AlertDialog dialogNoConnection;
 
     boolean isUnregistEventBus = false;
 
@@ -48,9 +42,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    protected boolean checkApiDialogIsShow() {
-        return dialogErrorAPI.isShowing() || dialogTimeOutAPI.isShowing() || dialogNoConnection.isShowing();
-    }
 
     @Override
     protected void onDestroy() {
@@ -60,14 +51,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
-
-    private void showApiDialog(AlertDialog alertDialog) {
-        if (alertDialog != null && !checkApiDialogIsShow()) {
-            alertDialog.show();
-        }
-    }
-
     /**
      * Handle data before setContentView call
      *
@@ -75,15 +58,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void onPreSetContentView(Bundle savedInstanceState) {
 
-    }
-
-    /**
-     * Handle deep link data
-     *
-     * @param uri
-     */
-    protected void handleDeepLinkData(Uri uri) {
-        DebugLog.i("uri: " + uri.toString());
     }
 
     /**
@@ -101,6 +75,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public abstract void initData();
 
+    protected void handleDeepLinkData(Uri uri) {
+        DebugLog.i("uri: " + uri.toString());
+    }
 
     @Override
     public void startActivity(Intent intent) {
