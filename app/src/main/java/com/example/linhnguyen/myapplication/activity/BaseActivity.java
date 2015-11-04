@@ -1,0 +1,132 @@
+package com.example.linhnguyen.myapplication.activity;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+
+import com.example.linhnguyen.myapplication.R;
+import com.example.linhnguyen.myapplication.util.DebugLog;
+import com.example.linhnguyen.myapplication.util.DialogUtil;
+import com.example.linhnguyen.myapplication.util.EventBusHelper;
+import com.example.linhnguyen.myapplication.util.KeyboardUtil;
+
+import butterknife.ButterKnife;
+
+/**
+ * Created by Envy 15T on 6/4/2015.
+ */
+public abstract class BaseActivity extends AppCompatActivity {
+
+    AlertDialog dialogErrorAPI;
+    AlertDialog dialogTimeOutAPI;
+    AlertDialog dialogNoConnection;
+
+    boolean isUnregistEventBus = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        onPreSetContentView(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        if (Intent.ACTION_VIEW.equals(action)) {
+            handleDeepLinkData(intent.getData());
+        }
+        setContentView(setContentViewId());
+        ButterKnife.inject(this);
+        EventBusHelper.register(this);
+        isUnregistEventBus = false;
+        initView();
+        initData();
+    }
+
+
+    protected boolean checkApiDialogIsShow() {
+        return dialogErrorAPI.isShowing() || dialogTimeOutAPI.isShowing() || dialogNoConnection.isShowing();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (!isUnregistEventBus) {
+            EventBusHelper.unregister(this);
+        }
+        super.onDestroy();
+    }
+
+
+
+    private void showApiDialog(AlertDialog alertDialog) {
+        if (alertDialog != null && !checkApiDialogIsShow()) {
+            alertDialog.show();
+        }
+    }
+
+    /**
+     * Handle data before setContentView call
+     *
+     * @param savedInstanceState
+     */
+    protected void onPreSetContentView(Bundle savedInstanceState) {
+
+    }
+
+    /**
+     * Handle deep link data
+     *
+     * @param uri
+     */
+    protected void handleDeepLinkData(Uri uri) {
+        DebugLog.i("uri: " + uri.toString());
+    }
+
+    /**
+     * @return layout of activity
+     */
+    public abstract int setContentViewId();
+
+    /**
+     * Define your view
+     */
+    public abstract void initView();
+
+    /**
+     * Setup your data
+     */
+    public abstract void initData();
+
+
+    @Override
+    public void startActivity(Intent intent) {
+        EventBusHelper.unregister(this);
+        isUnregistEventBus = true;
+        super.startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isUnregistEventBus) {
+            EventBusHelper.register(this);
+            isUnregistEventBus = false;
+        }
+    }
+
+    public void hideKeyBoardWhenTouchOutside(ViewGroup viewGroup) {
+        if (viewGroup != null) {
+            viewGroup.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    KeyboardUtil.hideSoftKeyboard(BaseActivity.this);
+                    return false;
+                }
+            });
+        }
+    }
+}
