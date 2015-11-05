@@ -15,9 +15,13 @@ import java.util.List;
 /**
  * Created by LinhNguyen on 11/4/2015.
  */
-public class ListEventAdapter extends AdapterWithItemClick<ListEventViewHolder> {
+public abstract class ListEventAdapter extends AdapterWithItemClick<ListEventViewHolder> {
+
+    public abstract void dataSender(int truyencaikhigithitruyen);
 
     List<CalenderEvent> data;
+    int offsetx;  // new
+    int x;
 
     public ListEventAdapter(List<CalenderEvent> data) {
         this.data = data;
@@ -32,13 +36,21 @@ public class ListEventAdapter extends AdapterWithItemClick<ListEventViewHolder> 
     @Override
     public void onBindViewHolder(ListEventViewHolder listEventViewHolder, int i) {
         listEventViewHolder.setup(data.get(i));
+        listEventViewHolder.swipeLayout(x, offsetx);
+
+        dataSender(i);
+
 
     }
 
+    public void swipeView(int x, int offsetx) {
+        this.x = x;
+        this.offsetx = offsetx;
+    }
 
     @Override
     public int getItemCount() {
-        return data!=null ? data.size():0;
+        return data != null ? data.size() : 0;
     }
 
 }

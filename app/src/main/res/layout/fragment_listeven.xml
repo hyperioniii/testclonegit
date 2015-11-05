@@ -8,10 +8,15 @@
         android:id="@+id/swipe_refresh_layout_list_event"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <com.example.linhnguyen.myapplication.util.CustomsRecycleViewHoriziontal
+            android:layout_width="match_parent"
+            android:id="@+id/list_event"
+            android:layout_height="match_parent">
+        </com.example.linhnguyen.myapplication.util.CustomsRecycleViewHoriziontal>
 
-        <android.support.v7.widget.RecyclerView
+       <!-- <android.support.v7.widget.RecyclerView
             android:id="@+id/list_event"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" />-->
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
