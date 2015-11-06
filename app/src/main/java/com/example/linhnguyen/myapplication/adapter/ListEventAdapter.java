@@ -22,6 +22,7 @@ public abstract class ListEventAdapter extends AdapterWithItemClick<ListEventVie
     List<CalenderEvent> data;
     int offsetx;  // new
     int x;
+    ListEventViewHolder listEventViewHolder;
 
     public ListEventAdapter(List<CalenderEvent> data) {
         this.data = data;
@@ -36,16 +37,14 @@ public abstract class ListEventAdapter extends AdapterWithItemClick<ListEventVie
     @Override
     public void onBindViewHolder(ListEventViewHolder listEventViewHolder, int i) {
         listEventViewHolder.setup(data.get(i));
-        listEventViewHolder.swipeLayout(x, offsetx);
-
+        this.listEventViewHolder = listEventViewHolder;
         dataSender(i);
-
-
     }
 
     public void swipeView(int x, int offsetx) {
         this.x = x;
         this.offsetx = offsetx;
+        listEventViewHolder.swipeLayout(x, offsetx);
     }
 
     @Override

@@ -81,8 +81,6 @@ public class FragmentListEvent extends BaseFragment  {
         adapter = new ListEventAdapter(data) {
             @Override
             public void dataSender(int truyencaikhigithitruyen) {
-                // day la du lieu trong adapter truyen ra, cu khi nao trong ham kia co thay doi thi ngoai nay cung thay doi theo dong bo vs nhau
-                // don gian the thoi
 
             }
         };

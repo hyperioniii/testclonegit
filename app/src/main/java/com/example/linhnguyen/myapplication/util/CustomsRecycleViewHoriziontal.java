@@ -35,63 +35,92 @@ public class CustomsRecycleViewHoriziontal extends RecyclerView {
         super(context, attrs, defStyle);
     }
 
+//    @Override
+//    public boolean onTouchEvent(MotionEvent ev) {
+//        final int action = ev.getAction();
+//        switch (action & MotionEventCompat.ACTION_MASK) {
+//            case MotionEvent.ACTION_DOWN:
+//                x =   ev.getX();
+//                y = ev.getY();
+//                DebugLog.d("x===y===  " + x+"=="+y);
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                mIsTouching = true;
+//                mIsScrolling = true;
+//                oldx = ev.getX();
+//                oldx = ev.getX();
+//
+//                if (mOnScrollListener != null) {
+//            mOnScrollListener.onScrollChanged(this,(int) x,(int) y,(int) oldx,(int) oldy);
+//        }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                if (mIsTouching && !mIsScrolling) {
+//                    if (mOnScrollListener != null) {
+//                        mOnScrollListener.onEndScroll(this);
+//                    }
+//                }
+//
+//                mIsTouching = false;
+//                break;
+//            default:
+//                break;
+//        }
+//        return super.onTouchEvent(ev);
+//    }
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = ev.getAction();
         switch (action & MotionEventCompat.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 x =   ev.getX();
                 y = ev.getY();
+                DebugLog.d("x===y===  " + x + "==" + y);
                 break;
             case MotionEvent.ACTION_MOVE:
                 mIsTouching = true;
                 mIsScrolling = true;
                 oldx = ev.getX();
                 oldx = ev.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                if (mIsTouching && !mIsScrolling) {
-                    if (mOnScrollListener != null) {
-                        mOnScrollListener.onEndScroll(this);
-                    }
-                }
 
-                mIsTouching = false;
+                if (mOnScrollListener != null) {
+                    mOnScrollListener.onScrollChanged(this, (int) x, (int) y, (int) oldx, (int) oldy);
+                }
                 break;
+
             default:
                 break;
         }
-        return super.onTouchEvent(ev);
+        return super.onInterceptTouchEvent(ev);
     }
-
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
-        if (Math.abs(oldx - x) > 0) {
-            if (mScrollingRunnable != null) {
-                removeCallbacks(mScrollingRunnable);
-            }
-
-            mScrollingRunnable = new Runnable() {
-                public void run() {
-                    if (mIsScrolling && !mIsTouching) {
-                        if (mOnScrollListener != null) {
-                            mOnScrollListener.onEndScroll(CustomsRecycleViewHoriziontal.this);
-                        }
-                    }
-
-                    mIsScrolling = false;
-                    mScrollingRunnable = null;
-                }
-            };
-
-            postDelayed(mScrollingRunnable, 200);
-        }
-
-        if (mOnScrollListener != null) {
-            mOnScrollListener.onScrollChanged(this,(int) x,(int) y,(int) oldx,(int) oldy);
-        }
-    }
+//    @Override
+//    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+//        super.onScrollChanged(l, t, oldl, oldt);
+//        if (Math.abs(oldx - x) > 0) {
+//            if (mScrollingRunnable != null) {
+//                removeCallbacks(mScrollingRunnable);
+//            }
+//
+//            mScrollingRunnable = new Runnable() {
+//                public void run() {
+//                    if (mIsScrolling && !mIsTouching) {
+//                        if (mOnScrollListener != null) {
+//                            mOnScrollListener.onEndScroll(CustomsRecycleViewHoriziontal.this);
+//                        }
+//                    }
+//
+//                    mIsScrolling = false;
+//                    mScrollingRunnable = null;
+//                }
+//            };
+//
+//            postDelayed(mScrollingRunnable, 200);
+//        }
+//
+//        if (mOnScrollListener != null) {
+//            mOnScrollListener.onScrollChanged(this,(int) x,(int) y,(int) oldx,(int) oldy);
+//        }
+//    }
 
     public OnScrollListener getOnScrollListener() {
         return mOnScrollListener;
